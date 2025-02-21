@@ -3,19 +3,16 @@
   "version": "1.0.0",
   "description": "Algorithm D implementation in ReScript",
   "type": "module",
-  "main": "src/Index.bs.js",
-  "module": "src/Index.bs.js",
+  "main": "src/Index.res.mjs",
+  "module": "src/Index.res.mjs",
   "files": [
     "src/*.res",
-    "src/*.bs.js"
+    "src/*.res.mjs"
   ],
   "scripts": {
-    "res:build": "rescript build -with-deps",
-    "res:clean": "rescript clean",
-    "res:dev": "rescript build -w",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
+    "build": "rescript build -with-deps",
+    "clean": "rescript clean",
+    "dev": "rescript build -w",
     "test": "vitest"
   },
   "keywords": [
@@ -26,7 +23,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@jihchi/vite-plugin-rescript": "^6.0.0",
     "@rescript/core": "^1.6.1",
     "rescript": "^11.1.4",
     "vite": "^6.1.1",

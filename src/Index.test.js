@@ -1,44 +1,63 @@
 import { describe, it, expect } from 'vitest'
-import { makeVar, makeConstructor, unify } from './Index.res.mjs'
+import { Trie } from './Index.res.mjs'
 
-describe('Algorithm D Unification', () => {
-  it('should unify identical variables', () => {
-    const x = makeVar('x')
-    const result = unify(x, x)
-    expect(result).toEqual({ TAG: "Ok", _0: undefined })
+describe('Trie Data Structure', () => {
+  it('should create an empty trie and handle basic operations', () => {
+    const trie = Trie.make()
+    expect(Trie.search(trie, "")).toBe(false)
+    expect(Trie.startsWith(trie, "")).toBe(true)
   })
 
-  it('should unify variable with constructor', () => {
-    const x = makeVar('x')
-    const cons = makeConstructor('cons', [makeVar('y')])
-    const result = unify(x, cons)
-    expect(result).toEqual({ TAG: "Ok", _0: undefined })
+  it('should insert and search for a word', () => {
+    let trie = Trie.make()
+    trie = Trie.insert(trie, "hello")
+
+    expect(Trie.search(trie, "hello")).toBe(true)
+    expect(Trie.search(trie, "hell")).toBe(false)
+    expect(Trie.search(trie, "hello world")).toBe(false)
   })
 
-  it('should fail occurs check', () => {
-    const x = makeVar('x')
-    const cons = makeConstructor('cons', [x])
-    const result = unify(x, cons)
-    expect(result).toEqual({
-      TAG: "Error",
-      _0: 'Occurs check failed: x occurs in term'
-    })
+  it('should handle multiple word insertions', () => {
+    let trie = Trie.make()
+    trie = Trie.insert(trie, "hello")
+    trie = Trie.insert(trie, "hell")
+    trie = Trie.insert(trie, "world")
+
+    expect(Trie.search(trie, "hello")).toBe(true)
+    expect(Trie.search(trie, "hell")).toBe(true)
+    expect(Trie.search(trie, "world")).toBe(true)
+    expect(Trie.search(trie, "worl")).toBe(false)
+    expect(Trie.search(trie, "worlds")).toBe(false)
   })
 
-  it('should unify identical constructors', () => {
-    const cons1 = makeConstructor('cons', [makeVar('x')])
-    const cons2 = makeConstructor('cons', [makeVar('y')])
-    const result = unify(cons1, cons2)
-    expect(result).toEqual({ TAG: "Ok", _0: undefined })
+  it('should check for prefixes', () => {
+    let trie = Trie.make()
+    trie = Trie.insert(trie, "hello")
+    trie = Trie.insert(trie, "world")
+
+    expect(Trie.startsWith(trie, "hel")).toBe(true)
+    expect(Trie.startsWith(trie, "hello")).toBe(true)
+    expect(Trie.startsWith(trie, "wor")).toBe(true)
+    expect(Trie.startsWith(trie, "world")).toBe(true)
+    expect(Trie.startsWith(trie, "worlds")).toBe(false)
+    expect(Trie.startsWith(trie, "cat")).toBe(false)
   })
 
-  it('should fail on different constructors', () => {
-    const cons1 = makeConstructor('cons', [makeVar('x')])
-    const cons2 = makeConstructor('nil', [])
-    const result = unify(cons1, cons2)
-    expect(result).toEqual({
-      TAG: "Error",
-      _0: 'Constructor mismatch'
-    })
+  it('should handle empty strings', () => {
+    let trie = Trie.make()
+    trie = Trie.insert(trie, "")
+
+    expect(Trie.search(trie, "")).toBe(true)
+    expect(Trie.startsWith(trie, "")).toBe(true)
+  })
+
+  it('should handle case sensitivity', () => {
+    let trie = Trie.make()
+    trie = Trie.insert(trie, "Hello")
+
+    expect(Trie.search(trie, "Hello")).toBe(true)
+    expect(Trie.search(trie, "hello")).toBe(false)
+    expect(Trie.startsWith(trie, "Hel")).toBe(true)
+    expect(Trie.startsWith(trie, "hel")).toBe(false)
   })
 })
