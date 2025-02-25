@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { Trie } from './Index.res.mjs'
+import { Trie } from './Trie.res.mjs'
 
 describe('Trie Data Structure', () => {
   it('should create an empty trie and handle basic operations', () => {

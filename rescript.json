@@ -17,11 +17,7 @@
   },
   "suffix": ".res.mjs",
   "bs-dependencies": [
-    "@rescript/core",
-    "vitest"
-  ],
-  "bs-dev-dependencies": [
-    "vitest"
+    "@rescript/core"
   ],
   "bsc-flags": [
     "-open RescriptCore"
