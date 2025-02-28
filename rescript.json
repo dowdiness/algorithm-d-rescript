@@ -13,7 +13,10 @@
   "gentypeconfig": {
     "module": "esmodule",
     "moduleResolution": "node",
-    "generatedFileExtension": ".gen.ts"
+    "generatedFileExtension": ".gen.ts",
+    "shims": {
+      "Dict": "Dict",
+    },
   },
   "suffix": ".res.mjs",
   "bs-dependencies": [

@@ -1,14 +1,15 @@
+@genType
 module Trie = {
   // Type definitions for Trie node
   type rec node = {
     isEndOfWord: bool,
-    children: Belt.Map.String.t<node>
+    children: Dict.t<node>
   }
 
   // Create a new empty trie node
   let makeNode = () => {
     isEndOfWord: false,
-    children: Belt.Map.String.empty
+    children: Dict.make()
   }
 
   // Insert a word into the trie
@@ -17,23 +18,21 @@ module Trie = {
       // If we've reached the end of the word, mark this node
       {...root, isEndOfWord: true}
     } else {
-      let firstChar = Js.String2.substring(word, ~from=0, ~to_=1)
-      let restOfWord = Js.String2.substring(word, ~from=1, ~to_=Js.String2.length(word))
+      let firstChar = String.substring(word, ~start=0, ~end=1)
+      let restOfWord = String.substring(word, ~start=1, ~end=String.length(word))
 
       // Get or create child node for this character
-      let childNode = switch Belt.Map.String.get(root.children, firstChar) {
+      let childNode = switch Dict.get(root.children, firstChar) {
       | None => makeNode()
       | Some(node) => node
       }
 
       // Recursively insert the rest of the word
       let updatedChild = insert(childNode, restOfWord)
-
       // Update the children map with the new/updated node
-      {
-        ...root,
-        children: Belt.Map.String.set(root.children, firstChar, updatedChild)
-      }
+      Dict.set(root.children, firstChar, updatedChild)
+
+      root
     }
   }
 
@@ -42,10 +41,10 @@ module Trie = {
     if word == "" {
       root.isEndOfWord
     } else {
-      let firstChar = Js.String2.substring(word, ~from=0, ~to_=1)
-      let restOfWord = Js.String2.substring(word, ~from=1, ~to_=Js.String2.length(word))
+      let firstChar = String.substring(word, ~start=0, ~end=1)
+      let restOfWord = String.substring(word, ~start=1, ~end=String.length(word))
 
-      switch Belt.Map.String.get(root.children, firstChar) {
+      switch Dict.get(root.children, firstChar) {
       | None => false
       | Some(childNode) => search(childNode, restOfWord)
       }
@@ -57,10 +56,10 @@ module Trie = {
     if prefix == "" {
       true
     } else {
-      let firstChar = Js.String2.substring(prefix, ~from=0, ~to_=1)
-      let restOfPrefix = Js.String2.substring(prefix, ~from=1, ~to_=Js.String2.length(prefix))
+      let firstChar = String.substring(prefix, ~start=0, ~end=1)
+      let restOfPrefix = String.substring(prefix, ~start=1, ~end=String.length(prefix))
 
-      switch Belt.Map.String.get(root.children, firstChar) {
+      switch Dict.get(root.children, firstChar) {
       | None => false
       | Some(childNode) => startsWith(childNode, restOfPrefix)
       }
